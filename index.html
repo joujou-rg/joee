@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مصروفي DZ - حاسبة المصاريف الشهرية وواجهة النقود الجزائرية</title>
+  <meta id="appFavicon" name="application-name" content="مصروفي DZ" />
+  <meta id="appleTouchIcon" name="apple-mobile-web-app-title" content="مصروفي DZ" />
+  <meta name="theme-color" content="#064e3b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="مصروفي DZ" />
+
+    <style>
+    .num-font {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      direction: ltr;
+      display: inline-block;
+    }
+    .banknote-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      user-select: none;
+    }
+    .banknote-card:active {
+      transform: scale(0.96);
+    }
+    .banknote-pattern {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+                        radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+      background-size: 16px 16px;
+      background-position: 0 0, 8px 8px;
+    }
+    .hologram-strip {
+      background: linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(253,224,71,0.35) 50%, rgba(167,243,208,0.45) 100%);
+    }
+    .coin-btn {
+      transition: transform 0.15s ease;
+      user-select: none;
+    }
+    .coin-btn:active {
+      transform: scale(0.94);
+    }
+    .bimetallic-100 {
+      background: radial-gradient(circle, #f59e0b 48%, #cbd5e1 50%, #94a3b8 100%);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 4px 10px rgba(0,0,0,0.12);
+    }
+    .bimetallic-200 {
+      background: radial-gradient(circle, #d97706 50%, #e2e8f0 52%, #94a3b8 100%);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 4px 10px rgba(0,0,0,0.12);
+    }
+    .bimetallic-50 {
+      background: radial-gradient(circle, #cbd5e1 48%, #d97706 50%, #b45309 100%);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 4px 10px rgba(0,0,0,0.12);
+    }
+    .bimetallic-20 {
+      background: radial-gradient(circle, #f59e0b 46%, #e2e8f0 48%, #94a3b8 100%);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 4px 10px rgba(0,0,0,0.12);
+    }
+    .bimetallic-10 {
+      background: radial-gradient(circle, #94a3b8 48%, #f59e0b 50%, #d97706 100%);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 4px 10px rgba(0,0,0,0.12);
+    }
+    .coin-silver {
+      background: radial-gradient(circle at 30% 30%, #f8fafc, #cbd5e1 65%, #94a3b8 100%);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.12);
+    }
+
+    /* 100% Self-Contained Instant-Render CSS for iPhone iOS WebView & Offline Use */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background-color: #f4f7f6 !important;
+      color: #0f172a !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Arabic', 'Geeza Pro', 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body { padding-bottom: 3rem; }
+    h1, h2, h3, h4, p { margin: 0; }
+    button, input, select { font-family: inherit; font-size: inherit; }
+    button { cursor: pointer; border: none; background: transparent; }
+    input, select { background: #fff; color: #0f172a; }
+    table { border-collapse: collapse; width: 100%; }
+
+    /* Layout & Containers */
+    .max-w-7xl { max-width: 80rem; margin-left: auto; margin-right: auto; }
+    .max-w-xl { max-width: 36rem; width: 100%; }
+    .max-w-md { max-width: 28rem; width: 100%; }
+    .max-w-sm { max-width: 24rem; width: 100%; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .w-full { width: 100%; }
+    .w-10 { width: 2.5rem; }
+    .h-10 { height: 2.5rem; }
+    .w-11 { width: 2.75rem; }
+    .h-11 { height: 2.75rem; }
+    .w-12 { width: 3rem; }
+    .h-12 { height: 3rem; }
+    .w-20 { width: 5rem; }
+    .w-24 { width: 6rem; }
+    .h-24 { height: 6rem; }
+    .w-9 { width: 2.25rem; }
+    .w-2 { width: 0.5rem; }
+    .h-2 { height: 0.5rem; }
+    .h-72 { height: 18rem; }
+    .h-full { height: 100%; }
+    .min-h-screen { min-height: 100vh; }
+    .min-w-0 { min-width: 0; }
+    .min-w-\[140px\] { min-width: 140px; }
+    .max-h-\[470px\] { max-height: 470px; }
+    .overflow-y-auto { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .overflow-x-auto { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .overflow-hidden { overflow: hidden; }
+    .shrink-0 { flex-shrink: 0; }
+    .flex-1 { flex: 1 1 0%; }
+
+    /* Positioning */
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .fixed { position: fixed; }
+    .sticky { position: sticky; }
+    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+    .top-0 { top: 0; }
+    .left-0 { left: 0; }
+    .left-3 { left: 0.75rem; }
+    .left-3\.5 { left: 0.875rem; }
+    .top-1\/2 { top: 50%; }
+    .bottom-5 { bottom: 1.25rem; }
+    .left-1\/2 { left: 50%; }
+    .-translate-y-1\/2 { transform: translateY(-50%); }
+    .-translate-x-1\/2 { transform: translateX(-50%); }
+    .z-10 { z-index: 10; }
+    .z-30 { z-index: 30; }
+    .z-50 { z-index: 50; }
+
+    /* Display, Flex & Grid */
+    .hidden { display: none !important; }
+    .block { display: block; }
+    .inline-block { display: inline-block; }
+    .flex { display: flex; }
+    .inline-flex { display: inline-flex; }
+    .grid { display: grid; }
+    .flex-col { flex-direction: column; }
+    .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .items-baseline { align-items: baseline; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .justify-end { justify-content: flex-end; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .gap-1 { gap: 0.25rem; }
+    .gap-1\.5 { gap: 0.375rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-2\.5 { gap: 0.625rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-6 { gap: 1.5rem; }
+
+    /* Spacing */
+    .p-1\.5 { padding: 0.375rem; }
+    .p-2 { padding: 0.5rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-3\.5 { padding: 0.875rem; }
+    .p-4 { padding: 1rem; }
+    .p-5 { padding: 1.25rem; }
+    .p-6 { padding: 1.5rem; }
+    .px-1\.5 { padding-left: 0.375rem; padding-right: 0.375rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-3\.5 { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+    .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+    .pt-1 { padding-top: 0.25rem; }
+    .pt-2 { padding-top: 0.5rem; }
+    .pt-2\.5 { padding-top: 0.625rem; }
+    .pt-3 { padding-top: 0.75rem; }
+    .pt-3\.5 { padding-top: 0.875rem; }
+    .pt-6 { padding-top: 1.5rem; }
+    .pb-3 { padding-bottom: 0.75rem; }
+    .pb-4 { padding-bottom: 1rem; }
+    .pb-12 { padding-bottom: 3rem; }
+    .pr-1 { padding-right: 0.25rem; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    .mb-1\.5 { margin-bottom: 0.375rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-5 { margin-bottom: 1.25rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mt-0\.5 { margin-top: 0.125rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-1\.5 { margin-top: 0.375rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mt-4 { margin-top: 1rem; }
+    .my-1 { margin-top: 0.25rem; margin-bottom: 0.25rem; }
+    .my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+    .my-8 { margin-top: 2rem; margin-bottom: 2rem; }
+    .ml-1 { margin-left: 0.25rem; }
+    .ml-2 { margin-left: 0.5rem; }
+    .space-y-1 > * + * { margin-top: 0.25rem; }
+    .space-y-1\.5 > * + * { margin-top: 0.375rem; }
+    .space-y-2\.5 > * + * { margin-top: 0.625rem; }
+    .space-y-4 > * + * { margin-top: 1rem; }
+    .space-y-5 > * + * { margin-top: 1.25rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+
+    /* Typography */
+    .text-\[10px\] { font-size: 10px; line-height: 1.3; }
+    .text-\[11px\] { font-size: 11px; line-height: 1.35; }
+    .text-xs { font-size: 0.75rem; line-height: 1.4; }
+    .text-sm { font-size: 0.875rem; line-height: 1.45; }
+    .text-base { font-size: 1rem; line-height: 1.5; }
+    .text-lg { font-size: 1.125rem; line-height: 1.5; }
+    .text-xl { font-size: 1.25rem; line-height: 1.4; }
+    .text-2xl { font-size: 1.5rem; line-height: 1.3; }
+    .text-3xl { font-size: 1.875rem; line-height: 1.25; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .font-extrabold { font-weight: 800; }
+    .text-right { text-align: right; }
+    .text-left { text-align: left; }
+    .text-center { text-align: center; }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* Colors & Backgrounds */
+    .bg-white { background-color: #ffffff; }
+    .bg-white\/10 { background-color: rgba(255,255,255,0.12); }
+    .bg-white\/20 { background-color: rgba(255,255,255,0.22); }
+    .bg-black\/25 { background-color: rgba(0,0,0,0.28); }
+    .bg-slate-50, .bg-slate-50\/70, .bg-slate-50\/80 { background-color: #f8fafc; }
+    .bg-slate-100 { background-color: #f1f5f9; }
+    .bg-slate-900 { background-color: #0f172a; }
+    .bg-slate-900\/60 { background-color: rgba(15, 23, 42, 0.65); }
+    .bg-emerald-50, .bg-emerald-50\/30, .bg-emerald-50\/70, .bg-emerald-50\/90 { background-color: #ecfdf5; }
+    .bg-emerald-100 { background-color: #d1fae5; }
+    .bg-emerald-400 { background-color: #34d399; }
+    .bg-emerald-500 { background-color: #10b981; }
+    .bg-emerald-500\/20, .bg-emerald-500\/30 { background-color: rgba(16, 185, 129, 0.25); }
+    .bg-emerald-600 { background-color: #059669; }
+    .bg-emerald-700 { background-color: #047857; }
+    .bg-amber-50 { background-color: #fffbeb; }
+    .bg-amber-100 { background-color: #fef3c7; }
+    .bg-amber-400 { background-color: #fbbf24; }
+    .bg-amber-500 { background-color: #f59e0b; }
+    .bg-rose-50 { background-color: #fff1f2; }
+    .bg-rose-100 { background-color: #ffe4e6; }
+    .bg-rose-600 { background-color: #e11d48; }
+    .bg-teal-50 { background-color: #f0fdfa; }
+    .bg-blue-50 { background-color: #eff6ff; }
+    .bg-purple-50 { background-color: #faf5ff; }
+    .bg-pink-50 { background-color: #fdf2f8; }
+    .bg-cyan-50 { background-color: #ecfeff; }
+    .bg-indigo-50 { background-color: #eef2ff; }
+
+    /* Gradients */
+    .bg-gradient-to-l.from-emerald-900 { background: linear-gradient(to left, #064e3b, #065f46, #134e4a); }
+    .bg-gradient-to-l.from-slate-900 { background: linear-gradient(to left, #0f172a, #022c22, #0f172a); }
+    .from-indigo-800 { background: linear-gradient(135deg, #3730a3, #1d4ed8, #0f766e); }
+    .from-rose-800 { background: linear-gradient(135deg, #9f1239, #b91c1c, #b45309); }
+    .from-emerald-800 { background: linear-gradient(135deg, #065f46, #0f766e, #581c87); }
+    .from-amber-800 { background: linear-gradient(135deg, #92400e, #c2410c, #854d0e); }
+    .from-slate-700 { background: linear-gradient(135deg, #334155, #d97706); }
+    .from-amber-700 { background: linear-gradient(135deg, #b45309, #475569); }
+    .from-slate-600 { background: linear-gradient(135deg, #475569, #64748b); }
+    .from-amber-600 { background: linear-gradient(135deg, #d97706, #64748b); }
+
+    /* Text Colors */
+    .text-white { color: #ffffff; }
+    .text-slate-950 { color: #020617; }
+    .text-slate-900 { color: #0f172a; }
+    .text-slate-800 { color: #1e293b; }
+    .text-slate-700 { color: #334155; }
+    .text-slate-600 { color: #475569; }
+    .text-slate-500 { color: #64748b; }
+    .text-slate-400 { color: #94a3b8; }
+    .text-slate-300 { color: #cbd5e1; }
+    .text-slate-200 { color: #e2e8f0; }
+    .text-emerald-950 { color: #022c22; }
+    .text-emerald-900 { color: #064e3b; }
+    .text-emerald-800 { color: #065f46; }
+    .text-emerald-700 { color: #047857; }
+    .text-emerald-600 { color: #059669; }
+    .text-emerald-300 { color: #6ee7b7; }
+    .text-emerald-200 { color: #a7f3d0; }
+    .text-emerald-100 { color: #d1fae5; }
+    .text-amber-800 { color: #92400e; }
+    .text-amber-700 { color: #b45309; }
+    .text-amber-300 { color: #fcd34d; }
+    .text-amber-200 { color: #fde68a; }
+    .text-amber-100 { color: #fef3c7; }
+    .text-rose-800 { color: #9f1239; }
+    .text-rose-700 { color: #be123c; }
+    .text-rose-600 { color: #e11d48; }
+    .text-rose-300 { color: #fda4af; }
+    .text-rose-100 { color: #ffe4e6; }
+    .text-teal-700 { color: #0f766e; }
+    .text-blue-800 { color: #1e40af; }
+    .text-blue-100 { color: #dbeafe; }
+    .text-purple-800 { color: #6b21a8; }
+    .text-pink-800 { color: #9d174d; }
+    .text-cyan-800 { color: #155e75; }
+    .text-indigo-800 { color: #3730a3; }
+
+    /* Borders & Radius */
+    .border { border: 1px solid #e2e8f0; }
+    .border-2 { border: 2px solid #10b981; }
+    .border-t { border-top: 1px solid #f1f5f9; }
+    .border-b { border-bottom: 1px solid #e2e8f0; }
+    .border-dashed { border-style: dashed; }
+    .border-slate-100 { border-color: #f1f5f9; }
+    .border-slate-200, .border-slate-200\/80, .border-slate-200\/90 { border-color: #e2e8f0; }
+    .border-slate-300 { border-color: #cbd5e1; }
+    .border-emerald-200 { border-color: #a7f3d0; }
+    .border-emerald-300 { border-color: #6ee7b7; }
+    .border-white\/10, .border-white\/20 { border-color: rgba(255,255,255,0.2); }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-md { border-radius: 0.375rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-3xl { border-radius: 1.5rem; }
+    .rounded-full { border-radius: 9999px; }
+    .rounded-br-full { border-bottom-right-radius: 9999px; }
+
+    /* Shadows */
+    .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .shadow, .shadow-md { box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.12); }
+    .shadow-xl, .shadow-2xl { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
+
+    /* Responsive Breakpoints */
+    @media (min-width: 640px) {
+      .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .sm\:col-span-2 { grid-column: span 2 / span 2; }
+      .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .sm\:p-6 { padding: 1.5rem; }
+      .sm\:text-xl { font-size: 1.25rem; }
+      .sm\:text-2xl { font-size: 1.5rem; }
+      .sm\:text-3xl { font-size: 1.875rem; }
+      .sm\:text-sm { font-size: 0.875rem; }
+    }
+    @media (min-width: 768px) {
+      .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+      .lg\:col-span-7 { grid-column: span 7 / span 7; }
+      .lg\:col-span-5 { grid-column: span 5 / span 5; }
+    }
+
+  </style>
+</head>
+<body dir="rtl" class="min-h-screen pb-12">
+
+  <!-- Top Header Bar -->
+  <header class="bg-gradient-to-l from-emerald-900 via-emerald-800 to-teal-900 text-white shadow-lg sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shadow-inner">
+          <span class="text-xl font-extrabold text-emerald-300">د.ج</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg sm:text-xl font-extrabold tracking-tight">مصروفي DZ</h1>
+            <span class="text-[11px] bg-emerald-500/30 border border-emerald-400/40 text-emerald-100 px-2 py-0.5 rounded-full font-semibold">الدينار والسنتيم</span>
+          </div>
+          <p class="text-xs text-emerald-200/90">حاسبة المصاريف الشهرية وواجهة النقود الجزائرية المبسطة</p>
+        </div>
+      </div>
+
+      <!-- Month Selector & Actions -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <div class="flex items-center bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 backdrop-blur-sm">
+          <span class="text-xs text-emerald-200 ml-2">الشهر:</span>
+          <input id="monthPicker" type="month" class="bg-transparent text-white text-sm font-bold focus:outline-none cursor-pointer" />
+        </div>
+
+        <button id="btnOpenBudgetModal" type="button" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-xs sm:text-sm px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5">
+          <span>⚙️ تعديل الراتب / الميزانية</span>
+        </button>
+
+        <button id="btnExportCsv" type="button" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl transition flex items-center gap-1.5" title="تحميل جدول المصاريف">
+          <span>📥 تصدير CSV</span>
+        </button>
+
+        <button id="btnOpenLocalAppModal" type="button" class="bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-xs sm:text-sm px-3.5 py-2 rounded-xl shadow-md transition flex items-center gap-1.5">
+          <span>📲 تثبيت / تحميل للهاتف والحاسوب</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+
+    <!-- Top Summary KPI Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Monthly Income / Budget -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-24 h-24 bg-emerald-50 rounded-br-full -z-0"></div>
+        <div class="relative z-10 flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-500">الدخل / الميزانية الشهرية</span>
+          <button id="btnQuickEditBudget" type="button" class="text-xs text-emerald-700 hover:text-emerald-900 font-bold bg-emerald-50 px-2.5 py-1 rounded-lg transition">تعديل</button>
+        </div>
+        <div class="relative z-10 my-1">
+          <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-baseline gap-1.5">
+            <span id="kpiIncomeDzd" class="num-font">0</span>
+            <span class="text-sm font-bold text-emerald-700">د.ج</span>
+          </div>
+          <p id="kpiIncomeCentime" class="text-xs font-semibold text-emerald-700 mt-1">0 سنتيم</p>
+        </div>
+        <div class="relative z-10 mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span>الهدف الادخاري:</span>
+          <span id="kpiSavingsGoal" class="font-bold text-slate-700">0 د.ج</span>
+        </div>
+      </div>
+
+      <!-- Total Expenses -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-24 h-24 bg-rose-50 rounded-br-full -z-0"></div>
+        <div class="relative z-10 flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-500">إجمالي المصاريف هذا الشهر</span>
+          <span id="kpiExpenseCountBadge" class="text-xs font-bold bg-rose-50 text-rose-700 px-2.5 py-1 rounded-lg">0 عملية</span>
+        </div>
+        <div class="relative z-10 my-1">
+          <div class="text-2xl sm:text-3xl font-extrabold text-rose-600 flex items-baseline gap-1.5">
+            <span id="kpiSpentDzd" class="num-font">0</span>
+            <span class="text-sm font-bold text-rose-600">د.ج</span>
+          </div>
+          <p id="kpiSpentCentime" class="text-xs font-semibold text-rose-700 mt-1">0 سنتيم</p>
+        </div>
+        <div class="relative z-10 mt-3 pt-2.5 border-t border-slate-100">
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-slate-500">نسبة استهلاك الميزانية</span>
+            <span id="kpiSpentPercent" class="font-bold text-slate-800 num-font">0%</span>
+          </div>
+          <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div id="kpiProgressBar" class="h-full bg-emerald-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Remaining Balance -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-24 h-24 bg-teal-50 rounded-br-full -z-0"></div>
+        <div class="relative z-10 flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-500">الرصيد المتبقي من الميزانية</span>
+          <span id="kpiStatusBadge" class="text-xs font-bold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-lg">ممتاز</span>
+        </div>
+        <div class="relative z-10 my-1">
+          <div class="text-2xl sm:text-3xl font-extrabold text-emerald-700 flex items-baseline gap-1.5">
+            <span id="kpiRemainingDzd" class="num-font">0</span>
+            <span class="text-sm font-bold text-emerald-700">د.ج</span>
+          </div>
+          <p id="kpiRemainingCentime" class="text-xs font-semibold text-teal-700 mt-1">0 سنتيم</p>
+        </div>
+        <div class="relative z-10 mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span>المسموح يومياً لباقي الشهر:</span>
+          <span id="kpiDailyAllowance" class="font-bold text-slate-800">0 د.ج/يوم</span>
+        </div>
+      </div>
+
+      <!-- Biggest Category & Daily Average -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-24 h-24 bg-amber-50 rounded-br-full -z-0"></div>
+        <div class="relative z-10 flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-500">أعلى باب مصاريف</span>
+          <span class="text-xs font-bold bg-amber-50 text-amber-800 px-2.5 py-1 rounded-lg">تحليل تلقائي</span>
+        </div>
+        <div class="relative z-10 my-1">
+          <div id="kpiTopCategoryName" class="text-lg sm:text-xl font-extrabold text-slate-900 truncate">لا توجد مصاريف بعد</div>
+          <p id="kpiTopCategoryAmount" class="text-xs font-semibold text-amber-700 mt-1">0 د.ج (0%)</p>
+        </div>
+        <div class="relative z-10 mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span>متوسط الصرف اليومي:</span>
+          <span id="kpiDailyAvg" class="font-bold text-slate-800">0 د.ج</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs for Easy Switching -->
+    <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-wrap gap-1.5">
+      <button id="tabBtnExpense" type="button" data-tab="expenseView" class="tab-nav-btn flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 bg-emerald-700 text-white shadow-sm">
+        <span>💵 تسجيل مصروف بواجهة النقود</span>
+      </button>
+      <button id="tabBtnWallet" type="button" data-tab="walletView" class="tab-nav-btn flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+        <span>🧮 حاسبة النقود والمحفظة (عدّاد الأوراق)</span>
+      </button>
+      <button id="tabBtnAnalytics" type="button" data-tab="analyticsView" class="tab-nav-btn flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+        <span>📊 الرسوم البيانية وتقرير الشهر</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: Expense Tracker + Interactive Cash Entry -->
+    <div id="expenseView" class="space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Right Column (in RTL): Visual Algerian Cash Interface & Expense Form -->
+        <div class="lg:col-span-7 space-y-5">
+          <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200/90">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div>
+                <h2 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                  <span>💵 واجهة النقود الجزائرية السريعة</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">اضغط على الأوراق أو القطع النقدية لتجميع مبلغ المصروف فوراً، أو اكتب المبلغ مباشرة</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button id="btnUndoNote" type="button" class="text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl transition">↩ تراجع</button>
+                <button id="btnClearAmount" type="button" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 px-3 py-1.5 rounded-xl transition">مسح المبلغ</button>
+              </div>
+            </div>
+
+            <!-- Banknotes Grid (2000, 1000, 500, 200 DZD) -->
+            <div class="mb-3">
+              <div class="text-xs font-bold text-slate-500 mb-2 flex items-center justify-between">
+                <span>الأوراق النقدية المتداولة (انقر للإضافة للمبلغ):</span>
+                <span class="text-[11px] text-emerald-700 font-semibold">10,000 د.ج = 1 مليون سنتيم</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <!-- 2000 DZD Note -->
+                <button type="button" data-cash-add="2000" class="cash-tap-btn banknote-card banknote-pattern rounded-2xl p-3 text-right text-white bg-gradient-to-br from-indigo-800 via-blue-700 to-teal-700 border border-indigo-400/30 shadow-md">
+                  <div class="hologram-strip w-2 h-full absolute left-3 top-0 opacity-60"></div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-bold bg-white/20 px-1.5 py-0.5 rounded">بنك الجزائر</span>
+                    <span class="text-xs font-bold text-amber-200">+2000</span>
+                  </div>
+                  <div class="my-2">
+                    <div class="text-xl sm:text-2xl font-extrabold num-font tracking-tight">2000 <span class="text-xs">DA</span></div>
+                    <div class="text-[11px] text-blue-100 font-semibold">ألفا دينار</div>
+                  </div>
+                  <div class="text-[11px] bg-black/25 inline-block px-2 py-0.5 rounded-md text-emerald-200 font-bold">
+                    200 ألف سنتيم
+                  </div>
+                </button>
+
+                <!-- 1000 DZD Note -->
+                <button type="button" data-cash-add="1000" class="cash-tap-btn banknote-card banknote-pattern rounded-2xl p-3 text-right text-white bg-gradient-to-br from-rose-800 via-red-700 to-amber-700 border border-rose-400/30 shadow-md">
+                  <div class="hologram-strip w-2 h-full absolute left-3 top-0 opacity-60"></div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-bold bg-white/20 px-1.5 py-0.5 rounded">بنك الجزائر</span>
+                    <span class="text-xs font-bold text-amber-200">+1000</span>
+                  </div>
+                  <div class="my-2">
+                    <div class="text-xl sm:text-2xl font-extrabold num-font tracking-tight">1000 <span class="text-xs">DA</span></div>
+                    <div class="text-[11px] text-rose-100 font-semibold">ألف دينار</div>
+                  </div>
+                  <div class="text-[11px] bg-black/25 inline-block px-2 py-0.5 rounded-md text-amber-200 font-bold">
+                    100 ألف سنتيم
+                  </div>
+                </button>
+
+                <!-- 500 DZD Note -->
+                <button type="button" data-cash-add="500" class="cash-tap-btn banknote-card banknote-pattern rounded-2xl p-3 text-right text-white bg-gradient-to-br from-emerald-800 via-teal-700 to-purple-800 border border-emerald-400/30 shadow-md">
+                  <div class="hologram-strip w-2 h-full absolute left-3 top-0 opacity-60"></div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-bold bg-white/20 px-1.5 py-0.5 rounded">بنك الجزائر</span>
+                    <span class="text-xs font-bold text-emerald-200">+500</span>
+                  </div>
+                  <div class="my-2">
+                    <div class="text-xl sm:text-2xl font-extrabold num-font tracking-tight">500 <span class="text-xs">DA</span></div>
+                    <div class="text-[11px] text-emerald-100 font-semibold">خمسمائة دينار</div>
+                  </div>
+                  <div class="text-[11px] bg-black/25 inline-block px-2 py-0.5 rounded-md text-emerald-200 font-bold">
+                    50 ألف سنتيم
+                  </div>
+                </button>
+
+                <!-- 200 DZD Note -->
+                <button type="button" data-cash-add="200" class="cash-tap-btn banknote-card banknote-pattern rounded-2xl p-3 text-right text-white bg-gradient-to-br from-amber-800 via-orange-700 to-yellow-800 border border-amber-400/30 shadow-md">
+                  <div class="hologram-strip w-2 h-full absolute left-3 top-0 opacity-60"></div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-bold bg-white/20 px-1.5 py-0.5 rounded">بنك الجزائر</span>
+                    <span class="text-xs font-bold text-amber-200">+200</span>
+                  </div>
+                  <div class="my-2">
+                    <div class="text-xl sm:text-2xl font-extrabold num-font tracking-tight">200 <span class="text-xs">DA</span></div>
+                    <div class="text-[11px] text-amber-100 font-semibold">مائتا دينار</div>
+                  </div>
+                  <div class="text-[11px] bg-black/25 inline-block px-2 py-0.5 rounded-md text-amber-200 font-bold">
+                    20 ألف سنتيم
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Algerian Coins Row (100, 50, 20, 10, 5 DZD) -->
+            <div class="mb-5">
+              <div class="text-xs font-bold text-slate-500 mb-2">القطع النقدية المعدنية (الصرف):</div>
+              <div class="grid grid-cols-5 gap-2 sm:gap-3">
+                <button type="button" data-cash-add="100" class="cash-tap-btn coin-btn flex flex-col items-center p-2 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200">
+                  <div class="w-11 h-11 rounded-full bimetallic-100 flex items-center justify-center text-slate-900 font-extrabold text-sm num-font border border-slate-400">100</div>
+                  <span class="text-xs font-bold text-slate-800 mt-1">100 د.ج</span>
+                  <span class="text-[10px] text-slate-500">10 آلاف</span>
+                </button>
+
+                <button type="button" data-cash-add="50" class="cash-tap-btn coin-btn flex flex-col items-center p-2 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200">
+                  <div class="w-11 h-11 rounded-full bimetallic-50 flex items-center justify-center text-slate-900 font-extrabold text-sm num-font border border-amber-700/40">50</div>
+                  <span class="text-xs font-bold text-slate-800 mt-1">50 د.ج</span>
+                  <span class="text-[10px] text-slate-500">5 آلاف</span>
+                </button>
+
+                <button type="button" data-cash-add="20" class="cash-tap-btn coin-btn flex flex-col items-center p-2 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200">
+                  <div class="w-11 h-11 rounded-full bimetallic-20 flex items-center justify-center text-slate-900 font-extrabold text-sm num-font border border-slate-400">20</div>
+                  <span class="text-xs font-bold text-slate-800 mt-1">20 د.ج</span>
+                  <span class="text-[10px] text-slate-500">ألفين</span>
+                </button>
+
+                <button type="button" data-cash-add="10" class="cash-tap-btn coin-btn flex flex-col items-center p-2 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200">
+                  <div class="w-11 h-11 rounded-full bimetallic-10 flex items-center justify-center text-slate-900 font-extrabold text-sm num-font border border-amber-600/40">10</div>
+                  <span class="text-xs font-bold text-slate-800 mt-1">10 د.ج</span>
+                  <span class="text-[10px] text-slate-500">ألف فرنك</span>
+                </button>
+
+                <button type="button" data-cash-add="5" class="cash-tap-btn coin-btn flex flex-col items-center p-2 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200">
+                  <div class="w-11 h-11 rounded-full coin-silver flex items-center justify-center text-slate-800 font-extrabold text-sm num-font border border-slate-300">5</div>
+                  <span class="text-xs font-bold text-slate-800 mt-1">5 د.ج</span>
+                  <span class="text-[10px] text-slate-500">500 فرنك</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Selected Notes Tray Pill -->
+            <div id="tappedNotesTray" class="hidden mb-4 p-3 rounded-2xl bg-emerald-50/90 border border-emerald-200 flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5 flex-wrap" id="tappedNotesList"></div>
+            </div>
+
+            <!-- Expense Input Form -->
+            <form id="expenseForm" class="space-y-4 pt-3 border-t border-slate-100">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Amount in DZD -->
+                <div>
+                  <label for="expenseAmount" class="block text-xs font-bold text-slate-700 mb-1.5">المبلغ بالدينار الجزائري (د.ج) *</label>
+                  <div class="relative">
+                    <input id="expenseAmount" type="number" min="1" step="any" required placeholder="مثال: 1500" class="w-full rounded-2xl border-2 border-emerald-600/40 focus:border-emerald-600 bg-emerald-50/30 px-4 py-3 text-xl font-extrabold text-slate-900 focus:outline-none transition num-font text-right" />
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-extrabold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg">د.ج (DA)</span>
+                  </div>
+                  <p id="liveCentimeHelper" class="text-xs font-bold text-emerald-700 mt-1.5">يعادل: 0 سنتيم</p>
+                </div>
+
+                <!-- Category Selector -->
+                <div>
+                  <label for="expenseCategory" class="block text-xs font-bold text-slate-700 mb-1.5">تصنيف المصروف *</label>
+                  <select id="expenseCategory" class="w-full rounded-2xl border border-slate-300 focus:border-emerald-600 bg-white px-3.5 py-3.5 text-sm font-bold text-slate-800 focus:outline-none">
+                    <option value="groceries">🛒 مواد غذائية وخضر (قضيان البيت)</option>
+                    <option value="bills">⚡ فواتير (سونلغاز، ماء، إنترنت، هاتف)</option>
+                    <option value="transport">🚕 نقل ووقود (طاكسي، بنزين، حافلة)</option>
+                    <option value="housing">🏠 كراء وسكن وصيانة</option>
+                    <option value="dining">☕ مقاهي ومطاعم وأكل خارجي</option>
+                    <option value="health">🏥 صحة وأدوية وطبيب</option>
+                    <option value="shopping">👕 ملابس ومشتريات شخصية</option>
+                    <option value="education">📚 دراسة وأبناء ومستلزمات</option>
+                    <option value="other">🎁 مصاريف أخرى / طوارئ</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- Description / Note -->
+                <div class="sm:col-span-2">
+                  <label for="expenseNote" class="block text-xs font-bold text-slate-700 mb-1.5">وصف المصروف (اختياري)</label>
+                  <input id="expenseNote" type="text" placeholder="مثال: خضر وفواكه، فاتورة الكهرباء، قهوة..." class="w-full rounded-2xl border border-slate-300 focus:border-emerald-600 px-4 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none" />
+                </div>
+
+                <!-- Date -->
+                <div>
+                  <label for="expenseDate" class="block text-xs font-bold text-slate-700 mb-1.5">التاريخ</label>
+                  <input id="expenseDate" type="date" required class="w-full rounded-2xl border border-slate-300 focus:border-emerald-600 px-3 py-2.5 text-sm font-bold text-slate-800 focus:outline-none" />
+                </div>
+              </div>
+
+              <!-- Quick Preset Chips for everyday Algerian expenses -->
+              <div class="pt-1">
+                <span class="text-[11px] font-bold text-slate-400 block mb-1.5">إضافة سريعة بنقرة واحدة (مصاريف يومية شائعة):</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <button type="button" data-quick-preset="خبز وحليب|50|groceries" class="quick-preset-chip text-xs bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 font-semibold px-2.5 py-1 rounded-xl border border-slate-200 transition">🥖 خبز وحليب (50 د.ج)</button>
+                  <button type="button" data-quick-preset="قهوة وفطور|150|dining" class="quick-preset-chip text-xs bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 font-semibold px-2.5 py-1 rounded-xl border border-slate-200 transition">☕ قهوة (150 د.ج)</button>
+                  <button type="button" data-quick-preset="نقل / طاكسي|200|transport" class="quick-preset-chip text-xs bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 font-semibold px-2.5 py-1 rounded-xl border border-slate-200 transition">🚕 طاكسي (200 د.ج)</button>
+                  <button type="button" data-quick-preset="تعبئة رصيد هاتف / فليكسي|1000|bills" class="quick-preset-chip text-xs bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 font-semibold px-2.5 py-1 rounded-xl border border-slate-200 transition">📱 فليكسي (1000 د.ج)</button>
+                  <button type="button" data-quick-preset="وقود سيارة|1500|transport" class="quick-preset-chip text-xs bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 font-semibold px-2.5 py-1 rounded-xl border border-slate-200 transition">⛽ وقود (1500 د.ج)</button>
+                  <button type="button" data-quick-preset="قضيان خضر وفواكه|2500|groceries" class="quick-preset-chip text-xs bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 font-semibold px-2.5 py-1 rounded-xl border border-slate-200 transition">🥬 خضر وفواكه (2500 د.ج)</button>
+                </div>
+              </div>
+
+              <button id="btnSubmitExpense" type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 active:scale-[0.99] text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-md hover:shadow-lg transition text-base flex items-center justify-center gap-2">
+                <span>➕ تسجيل المصروف في حساب الشهر</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Left Column (in RTL): Monthly Expenses Log & Filter -->
+        <div class="lg:col-span-5 flex flex-col">
+          <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200/90 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div>
+                  <h2 class="text-lg font-extrabold text-slate-900">📋 سجل مصاريف الشهر</h2>
+                  <p class="text-xs text-slate-500">جميع العمليات المسجلة مرتبة من الأحدث للأقدم</p>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <button id="btnLoadDemoData" type="button" class="text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1.5 rounded-xl transition">بيانات تجريبية</button>
+                  <button id="btnClearAllExpenses" type="button" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 px-2.5 py-1.5 rounded-xl transition">مسح الكل</button>
+                </div>
+              </div>
+
+              <!-- Filter & Search Bar -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
+                <input id="searchExpenseInput" type="text" placeholder="🔍 ابحث في المصاريف..." class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:border-emerald-600" />
+                <select id="filterCategorySelect" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600">
+                  <option value="all">كل التصنيفات</option>
+                  <option value="groceries">🛒 مواد غذائية وخضر</option>
+                  <option value="bills">⚡ فواتير وإنترنت</option>
+                  <option value="transport">🚕 نقل ووقود</option>
+                  <option value="housing">🏠 كراء وسكن</option>
+                  <option value="dining">☕ مقاهي ومطاعم</option>
+                  <option value="health">🏥 صحة وأدوية</option>
+                  <option value="shopping">👕 ملابس ومشتريات</option>
+                  <option value="education">📚 دراسة وأبناء</option>
+                  <option value="other">🎁 مصاريف أخرى</option>
+                </select>
+              </div>
+
+              <!-- Expenses List Container -->
+              <div id="expensesListContainer" class="space-y-2.5 max-h-[470px] overflow-y-auto pr-1">
+                <!-- Populated dynamically by JS -->
+              </div>
+            </div>
+
+            <!-- Footer summary inside list card -->
+            <div class="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="font-bold text-slate-500">مجموع القائمة المعروضة:</span>
+              <span id="filteredTotalText" class="font-extrabold text-sm text-slate-900">0 د.ج</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: Physical Wallet & Banknote Counter (حاسبة النقود والمحفظة) -->
+    <div id="walletView" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200/90">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+          <div>
+            <h2 class="text-xl font-extrabold text-slate-900">🧮 عدّاد النقود الجزائرية (حاسبة السيولة في اليد)</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">أدخل عدد الأوراق والقطع النقدية الموجودة في محفظتك أو درجك ليحسب لك المجموع بالدينار وبالسنتيم فوراً</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btnResetCounter" type="button" class="bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition">تصفير العدّاد</button>
+            <button id="btnSetAsBudget" type="button" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow transition">اعتماد المجموع كميزانية للشهر</button>
+          </div>
+        </div>
+
+        <!-- Counter Summary Banner -->
+        <div class="bg-gradient-to-l from-slate-900 via-emerald-950 to-slate-900 text-white rounded-2xl p-5 mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+          <div>
+            <span class="text-xs text-emerald-300 font-bold">إجمالي النقود المعدودة بالدينار:</span>
+            <div class="text-3xl sm:text-4xl font-extrabold mt-1 flex items-baseline gap-2">
+              <span id="counterTotalDzd" class="num-font text-amber-300">0</span>
+              <span class="text-base font-bold text-white">د.ج</span>
+            </div>
+          </div>
+          <div>
+            <span class="text-xs text-emerald-300 font-bold">المعادل بالسنتيم (المليون والألف):</span>
+            <div id="counterTotalCentime" class="text-lg sm:text-xl font-extrabold text-emerald-200 mt-1">0 سنتيم</div>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3 border border-white/10">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300">مقارنة بالرصيد المتبقي نظرياً:</span>
+              <span id="counterDiffBadge" class="font-bold text-emerald-300">متطابق</span>
+            </div>
+            <p id="counterDiffText" class="text-xs text-slate-200 font-semibold">أدخل عدد الأوراق لمقارنة ما في جيبك بالرصيد المتبقي</p>
+          </div>
+        </div>
+
+        <!-- Denominations Counter Grid -->
+        <div id="denominationCounterGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Visual Analytics & Monthly Report -->
+    <div id="analyticsView" class="hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Category Breakdown Chart -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200/90">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900">توزيع المصاريف حسب التصنيف</h3>
+              <p class="text-xs text-slate-500">أين تذهب نقودك هذا الشهر؟</p>
+            </div>
+          </div>
+          <div class="relative h-72 w-full">
+            <canvas id="categoryChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Daily Spending Bar Chart -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200/90">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900">المصاريف اليومية خلال الشهر</h3>
+              <p class="text-xs text-slate-500">تتبع أيام الذروة في الصرف بالدينار الجزائري</p>
+            </div>
+          </div>
+          <div class="relative h-72 w-full">
+            <canvas id="dailyChartCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Category Breakdown Table -->
+      <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200/90">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-slate-900">ملخص أبواب الصرف بالدينار والسنتيم</h3>
+            <p class="text-xs text-slate-500">تفصيل كامل لكل فئة مع النسبة المئوية من إجمالي المصاريف</p>
+          </div>
+          <button id="btnCopySummary" type="button" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs px-3.5 py-2 rounded-xl transition">📋 نسخ ملخص الشهر كنص</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-right text-sm">
+            <thead>
+              <tr class="border-b border-slate-200 text-slate-500 text-xs">
+                <th class="py-3 px-3">التصنيف</th>
+                <th class="py-3 px-3">عدد العمليات</th>
+                <th class="py-3 px-3">المجموع (د.ج)</th>
+                <th class="py-3 px-3">المعادل بالسنتيم</th>
+                <th class="py-3 px-3">النسبة</th>
+              </tr>
+            </thead>
+            <tbody id="categoryReportTableBody" class="divide-y divide-slate-100">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Budget & Income Modal -->
+  <div id="budgetModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-extrabold text-slate-900">⚙️ إعداد الراتب / الميزانية الشهرية</h3>
+        <button id="btnCloseBudgetModal" type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold px-2">✕</button>
+      </div>
+      <form id="budgetForm" class="space-y-4">
+        <div>
+          <label for="budgetInputDzd" class="block text-xs font-bold text-slate-700 mb-1.5">الدخل أو الميزانية الشهرية (بالدينار د.ج)</label>
+          <input id="budgetInputDzd" type="number" min="0" step="any" required placeholder="مثال: 60000" class="w-full rounded-2xl border-2 border-emerald-600/40 focus:border-emerald-600 px-4 py-3 text-xl font-extrabold text-slate-900 focus:outline-none num-font text-right" />
+          <p id="budgetModalCentimePreview" class="text-xs font-bold text-emerald-700 mt-1">يعادل: 6 ملايين سنتيم</p>
+        </div>
+
+        <!-- Quick Salary Presets -->
+        <div>
+          <span class="text-[11px] font-bold text-slate-500 block mb-1.5">اختيار سريع للميزانية:</span>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" data-budget-preset="30000" class="budget-preset-btn text-xs font-bold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 py-2 rounded-xl border border-slate-200">30,000 د.ج<br><span class="text-[10px] text-slate-500">3 ملايين</span></button>
+            <button type="button" data-budget-preset="45000" class="budget-preset-btn text-xs font-bold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 py-2 rounded-xl border border-slate-200">45,000 د.ج<br><span class="text-[10px] text-slate-500">4.5 ملايين</span></button>
+            <button type="button" data-budget-preset="60000" class="budget-preset-btn text-xs font-bold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 py-2 rounded-xl border border-slate-200">60,000 د.ج<br><span class="text-[10px] text-slate-500">6 ملايين</span></button>
+            <button type="button" data-budget-preset="80000" class="budget-preset-btn text-xs font-bold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 py-2 rounded-xl border border-slate-200">80,000 د.ج<br><span class="text-[10px] text-slate-500">8 ملايين</span></button>
+            <button type="button" data-budget-preset="100000" class="budget-preset-btn text-xs font-bold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 py-2 rounded-xl border border-slate-200">100,000 د.ج<br><span class="text-[10px] text-slate-500">10 ملايين</span></button>
+            <button type="button" data-budget-preset="150000" class="budget-preset-btn text-xs font-bold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 py-2 rounded-xl border border-slate-200">150,000 د.ج<br><span class="text-[10px] text-slate-500">15 مليون</span></button>
+          </div>
+        </div>
+
+        <div>
+          <label for="savingsGoalInputDzd" class="block text-xs font-bold text-slate-700 mb-1.5">هدف الادخار الشهري (اختياري - د.ج)</label>
+          <input id="savingsGoalInputDzd" type="number" min="0" step="any" placeholder="مثال: 10000" class="w-full rounded-2xl border border-slate-300 focus:border-emerald-600 px-4 py-2.5 text-base font-bold text-slate-800 focus:outline-none num-font text-right" />
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button type="submit" class="flex-1 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold py-3 rounded-2xl shadow transition">حفظ الميزانية</button>
+          <button id="btnCancelBudgetModal" type="button" class="px-5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-2xl transition">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal (Instead of native confirm) -->
+  <div id="confirmModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 text-center">
+      <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3 text-xl font-bold">!</div>
+      <h3 id="confirmModalTitle" class="text-base font-extrabold text-slate-900 mb-1">تأكيد الإجراء</h3>
+      <p id="confirmModalMessage" class="text-xs text-slate-600 mb-5">هل أنت متأكد من رغبتك في المتابعة؟</p>
+      <div class="flex gap-2">
+        <button id="btnConfirmYes" type="button" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition text-sm">نعم، متابعة</button>
+        <button id="btnConfirmNo" type="button" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-sm">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local App Install & Backup/Restore Modal -->
+  <div id="localAppModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 my-8">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-lg font-extrabold">📲</div>
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-slate-900">تشغيل «مصروفي DZ» كتطبيق محلي (Local App)</h3>
+            <p class="text-xs text-slate-500">يعمل مباشرة على هاتفك وحاسوبك بدون تعقيدات مع حفظ تلقائي للبيانات</p>
+          </div>
+        </div>
+        <button id="btnCloseLocalAppModal" type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold px-2">✕</button>
+      </div>
+
+      <div class="space-y-4 text-right">
+        <!-- Direct Single-File Download Box -->
+        <div class="p-4 rounded-2xl bg-gradient-to-l from-emerald-900 to-teal-900 text-white">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <span class="text-[11px] bg-emerald-400/20 border border-emerald-300/30 text-emerald-200 px-2 py-0.5 rounded-full font-bold">الطريقة الأسرع (ملف واحد مستقل)</span>
+              <h4 class="text-sm sm:text-base font-extrabold mt-1">حفظ نسخة التطبيق مباشرة على جهازك</h4>
+              <p class="text-xs text-emerald-100/90 mt-0.5">حمّل ملف التطبيق، وافتحه في أي وقت من هاتفك أو سطح المكتب في حاسوبك كبرنامج مستقل.</p>
+            </div>
+            <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+              <button id="btnDownloadStandaloneApp" type="button" class="flex-1 sm:flex-initial bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow transition">
+                ⬇️ تحميل ملف التطبيق (.html)
+              </button>
+              <button id="btnTriggerPwaInstall" type="button" class="hidden flex-1 sm:flex-initial bg-white hover:bg-emerald-50 text-emerald-950 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow transition">
+                ✨ تثبيت مباشر بنقرة واحدة
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dedicated iPhone Native App Install Box -->
+        <div class="p-4 rounded-2xl bg-slate-900 text-white border border-slate-700">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🍏</span>
+              <div>
+                <h4 class="text-sm font-extrabold text-emerald-300">تثبيت أيقونة تطبيق حقيقية على شاشة الآيفون (iPhone) بدون غوغل</h4>
+                <p class="text-[11px] text-slate-300">اختر الطريقة الأنسب لك ليصبح التطبيق أيقونة مستقلة على شاشة الآيفون الرئيسية:</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button id="btnCopyIosDataUrl" type="button" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl shadow transition">
+                📋 نسخ رابط التطبيق المباشر للآيفون (الأضمن 100%)
+              </button>
+              <button id="btnInstallIosProfile" type="button" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl shadow transition">
+                🍏 تثبيت أيقونة الآيفون مباشرة (.mobileconfig)
+              </button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-200 mt-3">
+            <div class="p-3 rounded-xl bg-white/10 border border-white/10">
+              <div class="font-extrabold text-amber-300 mb-1">الطريقة 1: تثبيت ملف تعريف الآيفون المباشر</div>
+              <ol class="space-y-1 list-decimal list-inside text-[11px]">
+                <li>اضغط زر <b>«🍏 تثبيت أيقونة الآيفون مباشرة»</b> أعلاه ثم اختر <b>السماح (Allow)</b>.</li>
+                <li>افتح <b>إعدادات الآيفون (Settings)</b> ⬅️ اضغط <b>«تم تنزيل ملف التعريف» (Profile Downloaded)</b> في الأعلى ⬅️ اضغط <b>تثبيت (Install)</b>.</li>
+                <li>ستجد تطبيق <b>«مصروفي DZ»</b> على شاشة الآيفون يفتح بملء الشاشة بدون أي متصفح وبلا إنترنت!</li>
+              </ol>
+            </div>
+            <div class="p-3 rounded-xl bg-white/10 border border-white/10">
+              <div class="font-extrabold text-emerald-300 mb-1">الطريقة 2: عبر تطبيق «الملفات» و«الاختصارات» في الآيفون</div>
+              <ol class="space-y-1 list-decimal list-inside text-[11px]">
+                <li>اضغط <b>«⬇️ تحميل ملف التطبيق (.html)»</b> ليُحفظ في تطبيق <b>الملفات (Files)</b> بالآيفون.</li>
+                <li>افتح تطبيق <b>الاختصارات (Shortcuts)</b> في الآيفون ⬅️ اضغط <b>(+)</b> ⬅️ أضف إجراء <b>«فتح ملف» (Open File)</b> واختر ملف التطبيق.</li>
+                <li>اضغط السهم أعلى الاختصار واختر <b>«إضافة إلى الشاشة الرئيسية»</b> ليصبح تطبيقاً دائماً!</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- Local Data Sync (Backup / Restore JSON between Phone & PC) -->
+        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200">
+          <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 mb-1">🔄 نقل ومزامنة البيانات بين الهاتف والحاسوب (نسخ احتياطي محلي)</h4>
+          <p class="text-xs text-slate-600 mb-3">بما أن بياناتك محفوظة محلياً بخصوصية تامة على جهازك، يمكنك حفظ نسخة احتياطية من حساباتك أو نقلها من الحاسوب إلى الهاتف (أو العكس) بضغطة زر:</p>
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btnExportJsonBackup" type="button" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5">
+              <span>💾 حفظ نسخة البيانات (.json)</span>
+            </button>
+            <label for="inputImportJsonBackup" class="cursor-pointer bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold text-xs px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5">
+              <span>📂 استعادة / استيراد بيانات من ملف</span>
+            </label>
+            <input id="inputImportJsonBackup" type="file" accept=".json,application/json" class="hidden" />
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-1">
+          <button id="btnDismissLocalAppModal" type="button" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition">إغلاق</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastBanner" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-bold z-50 hidden items-center gap-2 border border-white/15">
+    <span id="toastText">تم الحفظ بنجاح</span>
+  </div>
+
+  <script>
+    // Categories metadata
+    const CATEGORIES = {
+      groceries: { label: 'مواد غذائية وخضر', icon: '🛒', color: '#10b981', badgeBg: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
+      bills:     { label: 'فواتير وإنترنت', icon: '⚡', color: '#3b82f6', badgeBg: 'bg-blue-50 text-blue-800 border-blue-200' },
+      transport: { label: 'نقل ووقود', icon: '🚕', color: '#f59e0b', badgeBg: 'bg-amber-50 text-amber-800 border-amber-200' },
+      housing:   { label: 'كراء وسكن', icon: '🏠', color: '#8b5cf6', badgeBg: 'bg-purple-50 text-purple-800 border-purple-200' },
+      dining:    { label: 'مقاهي ومطاعم', icon: '☕', color: '#ec4899', badgeBg: 'bg-pink-50 text-pink-800 border-pink-200' },
+      health:    { label: 'صحة وأدوية', icon: '🏥', color: '#ef4444', badgeBg: 'bg-rose-50 text-rose-800 border-rose-200' },
+      shopping:  { label: 'ملابس ومشتريات', icon: '👕', color: '#06b6d4', badgeBg: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
+      education: { label: 'دراسة وأبناء', icon: '📚', color: '#6366f1', badgeBg: 'bg-indigo-50 text-indigo-800 border-indigo-200' },
+      other:     { label: 'مصاريف أخرى', icon: '🎁', color: '#64748b', badgeBg: 'bg-slate-100 text-slate-800 border-slate-200' }
+    };
+
+    // Algerian Currency Denominations for Wallet Counter
+    const DENOMINATIONS = [
+      { value: 2000, type: 'ورقة نقدية', title: '2000 د.ج', subtitle: '200 ألف سنتيم', gradient: 'from-indigo-800 to-blue-700' },
+      { value: 1000, type: 'ورقة نقدية', title: '1000 د.ج', subtitle: '100 ألف سنتيم', gradient: 'from-rose-800 to-amber-700' },
+      { value: 500,  type: 'ورقة نقدية', title: '500 د.ج',  subtitle: '50 ألف سنتيم',  gradient: 'from-emerald-800 to-teal-700' },
+      { value: 200,  type: 'ورقة / قطعة', title: '200 د.ج',  subtitle: '20 ألف سنتيم',  gradient: 'from-amber-800 to-yellow-700' },
+      { value: 100,  type: 'قطعة نقدية', title: '100 د.ج',  subtitle: '10 آلاف سنتيم', gradient: 'from-slate-700 to-amber-600' },
+      { value: 50,   type: 'قطعة نقدية', title: '50 د.ج',   subtitle: '5 آلاف سنتيم',  gradient: 'from-amber-700 to-slate-600' },
+      { value: 20,   type: 'قطعة نقدية', title: '20 د.ج',   subtitle: 'ألفا سنتيم',    gradient: 'from-slate-600 to-amber-500' },
+      { value: 10,   type: 'قطعة نقدية', title: '10 د.ج',   subtitle: 'ألف سنتيم',     gradient: 'from-amber-600 to-slate-500' },
+      { value: 5,    type: 'قطعة نقدية', title: '5 د.ج',    subtitle: '500 سنتيم',     gradient: 'from-slate-600 to-slate-500' }
+    ];
+
+    const STORAGE_KEY = 'masroufi_dz_state_v1';
+
+    // Helper: Format number with commas
+    function formatNum(num) {
+      const n = Number(num) || 0;
+      return n.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    }
+
+    // Helper: Convert DZD to authentic Algerian Centime / Million phrasing
+    function dzdToAlgerianCentimeText(dzd) {
+      const val = Math.round(Number(dzd) || 0);
+      if (val === 0) return '0 سنتيم';
+      const absVal = Math.abs(val);
+      const sign = val < 0 ? 'ناقص ' : '';
+
+      // 10,000 DZD = 1 Million centimes
+      // 10 DZD = 1,000 centimes (ألف فرنك/سنتيم)
+      const millions = Math.floor(absVal / 10000);
+      const remainderDzd = absVal % 10000;
+      const thousandsCentimes = Math.floor(remainderDzd / 10);
+
+      const parts = [];
+      if (millions > 0) {
+        if (millions === 1) parts.push('مليون');
+        else if (millions === 2) parts.push('مليونين');
+        else if (millions >= 3 && millions <= 10) parts.push(`${millions} ملايين`);
+        else parts.push(`${formatNum(millions)} مليون`);
+      }
+
+      if (thousandsCentimes > 0) {
+        parts.push(`${formatNum(thousandsCentimes)} ألف`);
+      }
+
+      const subTenDzd = remainderDzd % 10;
+      if (subTenDzd > 0 && parts.length === 0) {
+        return `${sign}${formatNum(absVal * 100)} سنتيم`;
+      }
+
+      if (parts.length === 0) {
+        return `${sign}${formatNum(absVal * 100)} سنتيم`;
+      }
+
+      return `${sign}${parts.join(' و ')} سنتيم`;
+    }
+
+    // Current Month string YYYY-MM
+    function getDefaultMonthStr() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      return `${y}-${m}`;
+    }
+
+    function getTodayDateStr() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    // Initial Sample Data for a great first impression
+    function createInitialDemoMonth(monthStr) {
+      return {
+        budgetDzd: 65000,
+        savingsGoalDzd: 10000,
+        expenses: [
+          { id: 'exp_1', amount: 4200, category: 'groceries', note: 'قضيان أسبوعي (خضر، فواكه، لحوم)', date: `${monthStr}-02` },
+          { id: 'exp_2', amount: 3400, category: 'bills', note: 'فاتورة الكهرباء والغاز (سونلغاز)', date: `${monthStr}-04` },
+          { id: 'exp_3', amount: 1600, category: 'bills', note: 'اشتراك الإنترنت (اتصالات الجزائر)', date: `${monthStr}-05` },
+          { id: 'exp_4', amount: 1500, category: 'transport', note: 'وقود السيارة وتنقلات', date: `${monthStr}-07` },
+          { id: 'exp_5', amount: 850, category: 'dining', note: 'قهوة ووجبة خفيفة مع الأصدقاء', date: `${monthStr}-09` },
+          { id: 'exp_6', amount: 2300, category: 'health', note: 'أدوية من الصيدلية', date: `${monthStr}-11` }
+        ],
+        walletCounts: {
+          2000: 15,
+          1000: 12,
+          500: 10,
+          200: 8,
+          100: 5,
+          50: 4,
+          20: 5,
+          10: 5,
+          5: 0
+        }
+      };
+    }
+
+    // App State
+    let appState = {
+      currentMonth: getDefaultMonthStr(),
+      monthsData: {}
+    };
+
+    let tappedNotesStack = [];
+    let categoryChart = null;
+    let dailyChart = null;
+    let pendingConfirmCallback = null;
+
+    // Load & Save State safely
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.monthsData) {
+            appState = parsed;
+          }
+        }
+      } catch (e) {
+        // Fallback to in-memory state if blocked
+      }
+
+      if (!appState.currentMonth) {
+        appState.currentMonth = getDefaultMonthStr();
+      }
+      ensureMonthExists(appState.currentMonth, Object.keys(appState.monthsData).length === 0);
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        // Ignore storage errors inside sandboxed iframes
+      }
+    }
+
+    function ensureMonthExists(monthStr, populateDemo = false) {
+      if (!appState.monthsData[monthStr]) {
+        if (populateDemo) {
+          appState.monthsData[monthStr] = createInitialDemoMonth(monthStr);
+        } else {
+          appState.monthsData[monthStr] = {
+            budgetDzd: 60000,
+            savingsGoalDzd: 10000,
+            expenses: [],
+            walletCounts: { 2000: 0, 1000: 0, 500: 0, 200: 0, 100: 0, 50: 0, 20: 0, 10: 0, 5: 0 }
+          };
+        }
+      }
+    }
+
+    function getCurrentMonthObj() {
+      ensureMonthExists(appState.currentMonth, false);
+      return appState.monthsData[appState.currentMonth];
+    }
+
+    // Show Toast
+    let toastTimer = null;
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      const text = document.getElementById('toastText');
+      text.textContent = msg;
+      banner.classList.remove('hidden');
+      banner.classList.add('flex');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add('hidden');
+        banner.classList.remove('flex');
+      }, 2800);
+    }
+
+    // Custom Confirmation Dialog
+    function openConfirmModal(title, message, onConfirm) {
+      document.getElementById('confirmModalTitle').textContent = title;
+      document.getElementById('confirmModalMessage').textContent = message;
+      pendingConfirmCallback = onConfirm;
+      const modal = document.getElementById('confirmModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeConfirmModal() {
+      const modal = document.getElementById('confirmModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      pendingConfirmCallback = null;
+    }
+
+    // Render Top KPIs
+    function renderKPIs() {
+      const monthObj = getCurrentMonthObj();
+      const budget = Number(monthObj.budgetDzd) || 0;
+      const savingsGoal = Number(monthObj.savingsGoalDzd) || 0;
+      const expenses = monthObj.expenses || [];
+
+      const totalSpent = expenses.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+      const remaining = budget - totalSpent;
+      const spentPercent = budget > 0 ? Math.min(100, Math.round((totalSpent / budget) * 100)) : 0;
+
+      document.getElementById('kpiIncomeDzd').textContent = formatNum(budget);
+      document.getElementById('kpiIncomeCentime').textContent = dzdToAlgerianCentimeText(budget);
+      document.getElementById('kpiSavingsGoal').textContent = `${formatNum(savingsGoal)} د.ج`;
+
+      document.getElementById('kpiSpentDzd').textContent = formatNum(totalSpent);
+      document.getElementById('kpiSpentCentime').textContent = dzdToAlgerianCentimeText(totalSpent);
+      document.getElementById('kpiExpenseCountBadge').textContent = `${expenses.length} عملية`;
+      document.getElementById('kpiSpentPercent').textContent = `${spentPercent}%`;
+
+      const progressBar = document.getElementById('kpiProgressBar');
+      progressBar.style.width = `${spentPercent}%`;
+      if (spentPercent < 65) {
+        progressBar.className = 'h-full bg-emerald-500 rounded-full transition-all duration-300';
+      } else if (spentPercent < 90) {
+        progressBar.className = 'h-full bg-amber-500 rounded-full transition-all duration-300';
+      } else {
+        progressBar.className = 'h-full bg-rose-600 rounded-full transition-all duration-300';
+      }
+
+      const remEl = document.getElementById('kpiRemainingDzd');
+      remEl.textContent = formatNum(remaining);
+      document.getElementById('kpiRemainingCentime').textContent = dzdToAlgerianCentimeText(remaining);
+
+      const statusBadge = document.getElementById('kpiStatusBadge');
+      if (remaining < 0) {
+        statusBadge.textContent = 'تجاوز الميزانية!';
+        statusBadge.className = 'text-xs font-bold bg-rose-100 text-rose-800 px-2.5 py-1 rounded-lg';
+      } else if (remaining < savingsGoal) {
+        statusBadge.textContent = 'انتبه للصرف';
+        statusBadge.className = 'text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-lg';
+      } else {
+        statusBadge.textContent = 'وضع آمن';
+        statusBadge.className = 'text-xs font-bold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-lg';
+      }
+
+      // Daily allowance & average
+      const [yearNum, monthNum] = appState.currentMonth.split('-').map(Number);
+      const daysInMonth = new Date(yearNum, monthNum, 0).getDate() || 30;
+      const now = new Date();
+      const isCurrentMonth = (now.getFullYear() === yearNum && (now.getMonth() + 1) === monthNum);
+      const elapsedDays = isCurrentMonth ? Math.max(1, now.getDate()) : daysInMonth;
+      const remainingDays = isCurrentMonth ? Math.max(1, daysInMonth - now.getDate() + 1) : daysInMonth;
+
+      const dailyAllowance = remaining > 0 ? Math.round(remaining / remainingDays) : 0;
+      const dailyAvg = Math.round(totalSpent / elapsedDays);
+
+      document.getElementById('kpiDailyAllowance').textContent = `${formatNum(dailyAllowance)} د.ج/يوم`;
+      document.getElementById('kpiDailyAvg').textContent = `${formatNum(dailyAvg)} د.ج/يوم`;
+
+      // Top Category
+      const catTotals = {};
+      expenses.forEach(e => {
+        catTotals[e.category] = (catTotals[e.category] || 0) + (Number(e.amount) || 0);
+      });
+      let topCatKey = null;
+      let topCatVal = 0;
+      Object.entries(catTotals).forEach(([k, v]) => {
+        if (v > topCatVal) {
+          topCatVal = v;
+          topCatKey = k;
+        }
+      });
+
+      if (topCatKey && CATEGORIES[topCatKey]) {
+        const catInfo = CATEGORIES[topCatKey];
+        const pct = totalSpent > 0 ? Math.round((topCatVal / totalSpent) * 100) : 0;
+        document.getElementById('kpiTopCategoryName').textContent = `${catInfo.icon} ${catInfo.label}`;
+        document.getElementById('kpiTopCategoryAmount').textContent = `${formatNum(topCatVal)} د.ج (${pct}% من المصاريف)`;
+      } else {
+        document.getElementById('kpiTopCategoryName').textContent = 'لا توجد مصاريف بعد';
+        document.getElementById('kpiTopCategoryAmount').textContent = '0 د.ج (0%)';
+      }
+    }
+
+    // Render Tapped Cash Notes Tray & Live Centime Helper
+    function updateAmountHelpers() {
+      const amountInput = document.getElementById('expenseAmount');
+      const val = Number(amountInput.value) || 0;
+      document.getElementById('liveCentimeHelper').textContent = `يعادل: ${dzdToAlgerianCentimeText(val)}`;
+
+      const tray = document.getElementById('tappedNotesTray');
+      const list = document.getElementById('tappedNotesList');
+
+      if (tappedNotesStack.length === 0) {
+        tray.classList.add('hidden');
+        tray.classList.remove('flex');
+        list.innerHTML = '';
+        return;
+      }
+
+      tray.classList.remove('hidden');
+      tray.classList.add('flex');
+
+      // Group counts of tapped notes
+      const counts = {};
+      tappedNotesStack.forEach(n => { counts[n] = (counts[n] || 0) + 1; });
+
+      list.innerHTML = '<span class="text-xs font-bold text-emerald-900 ml-1">النقود المختارة:</span>' +
+        Object.entries(counts)
+          .sort((a, b) => Number(b[0]) - Number(a[0]))
+          .map(([denom, count]) => `
+            <span class="inline-flex items-center gap-1 text-xs font-extrabold bg-white text-emerald-900 border border-emerald-300 px-2.5 py-1 rounded-xl shadow-2xs">
+              <span>${denom} د.ج</span>
+              <span class="text-emerald-600 num-font">×${count}</span>
+            </span>
+          `).join('');
+    }
+
+    // Render Expenses List
+    function renderExpensesList() {
+      const monthObj = getCurrentMonthObj();
+      const searchQ = (document.getElementById('searchExpenseInput').value || '').trim().toLowerCase();
+      const catFilter = document.getElementById('filterCategorySelect').value;
+
+      const filtered = (monthObj.expenses || []).filter(item => {
+        if (catFilter !== 'all' && item.category !== catFilter) return false;
+        if (searchQ) {
+          const catLabel = CATEGORIES[item.category] ? CATEGORIES[item.category].label : '';
+          const hay = `${item.note || ''} ${catLabel} ${item.amount}`.toLowerCase();
+          if (!hay.includes(searchQ)) return false;
+        }
+        return true;
+      }).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+      const container = document.getElementById('expensesListContainer');
+      const filteredSum = filtered.reduce((acc, item) => acc + (Number(item.amount) || 0), 0);
+      document.getElementById('filteredTotalText').textContent = `${formatNum(filteredSum)} د.ج (${dzdToAlgerianCentimeText(filteredSum)})`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 px-4 rounded-2xl bg-slate-50 border border-dashed border-slate-200">
+            <div class="text-3xl mb-2">🧾</div>
+            <p class="text-sm font-bold text-slate-700">لا توجد مصاريف مطابقة في هذا الشهر</p>
+            <p class="text-xs text-slate-500 mt-1">انقر على الأوراق النقدية على اليمين لإضافة أول مصروف بسهولة</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const cat = CATEGORIES[item.category] || CATEGORIES.other;
+        const noteText = item.note && item.note.trim() ? item.note : cat.label;
+        return `
+          <div class="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50/80 hover:bg-slate-100/80 border border-slate-200/80 transition">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 border ${cat.badgeBg}">
+                ${cat.icon}
+              </div>
+              <div class="min-w-0">
+                <div class="text-sm font-extrabold text-slate-900 truncate">${escapeHtml(noteText)}</div>
+                <div class="flex items-center gap-2 text-[11px] text-slate-500 mt-0.5 flex-wrap">
+                  <span class="font-bold text-slate-600">${cat.label}</span>
+                  <span>•</span>
+                  <span class="num-font">${escapeHtml(item.date || '')}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <div class="text-left">
+                <div class="text-sm font-extrabold text-rose-600 num-font">-${formatNum(item.amount)} <span class="text-[11px]">د.ج</span></div>
+                <div class="text-[10px] font-semibold text-slate-500">${dzdToAlgerianCentimeText(item.amount)}</div>
+              </div>
+              <button type="button" data-delete-id="${item.id}" class="delete-expense-btn text-slate-400 hover:text-rose-600 hover:bg-rose-50 p-2 rounded-xl transition" title="حذف هذا المصروف">
+                🗑️
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Render Physical Wallet Banknote Counter (Tab 2)
+    function renderWalletCounter() {
+      const monthObj = getCurrentMonthObj();
+      if (!monthObj.walletCounts) {
+        monthObj.walletCounts = { 2000: 0, 1000: 0, 500: 0, 200: 0, 100: 0, 50: 0, 20: 0, 10: 0, 5: 0 };
+      }
+
+      const grid = document.getElementById('denominationCounterGrid');
+      let grandTotal = 0;
+
+      grid.innerHTML = DENOMINATIONS.map(d => {
+        const count = Number(monthObj.walletCounts[d.value]) || 0;
+        const subTotal = count * d.value;
+        grandTotal += subTotal;
+
+        return `
+          <div class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 flex flex-col justify-between gap-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="px-3 py-1.5 rounded-xl bg-gradient-to-br ${d.gradient} text-white font-extrabold text-sm num-font shadow-xs">
+                  ${d.value} DA
+                </div>
+                <div>
+                  <div class="text-sm font-extrabold text-slate-900">${d.title}</div>
+                  <div class="text-[11px] font-semibold text-slate-500">${d.type} • ${d.subtitle}</div>
+                </div>
+              </div>
+              <div class="text-left">
+                <div class="text-sm font-extrabold text-emerald-700 num-font">${formatNum(subTotal)} د.ج</div>
+                <div class="text-[10px] text-slate-500">${dzdToAlgerianCentimeText(subTotal)}</div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200/70">
+              <button type="button" data-counter-step="-1" data-denom="${d.value}" class="counter-step-btn w-10 h-10 rounded-xl bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-200 font-extrabold text-lg transition">-</button>
+              <div class="flex-1 text-center">
+                <input type="number" min="0" value="${count}" data-denom-input="${d.value}" class="denom-direct-input w-full text-center bg-white border border-slate-200 rounded-xl py-1.5 font-extrabold text-base text-slate-900 num-font focus:outline-none focus:border-emerald-600" />
+                <span class="text-[10px] text-slate-400 block mt-0.5">عدد الأوراق / القطع</span>
+              </div>
+              <button type="button" data-counter-step="1" data-denom="${d.value}" class="counter-step-btn w-10 h-10 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-lg shadow-xs transition">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('counterTotalDzd').textContent = formatNum(grandTotal);
+      document.getElementById('counterTotalCentime').textContent = dzdToAlgerianCentimeText(grandTotal);
+
+      // Compare with remaining theoretical balance
+      const budget = Number(monthObj.budgetDzd) || 0;
+      const totalSpent = (monthObj.expenses || []).reduce((s, e) => s + (Number(e.amount) || 0), 0);
+      const remaining = budget - totalSpent;
+      const diff = grandTotal - remaining;
+
+      const diffBadge = document.getElementById('counterDiffBadge');
+      const diffText = document.getElementById('counterDiffText');
+
+      if (diff === 0) {
+        diffBadge.textContent = 'متطابق تماماً ✓';
+        diffBadge.className = 'font-bold text-emerald-300';
+        diffText.textContent = 'المبلغ المعدود يطابق الرصيد المتبقي في الحساب تماماً.';
+      } else if (diff > 0) {
+        diffBadge.textContent = `+${formatNum(diff)} د.ج فائض`;
+        diffBadge.className = 'font-bold text-amber-300';
+        diffText.textContent = `لديك سيولة إضافية قدرها ${formatNum(diff)} د.ج فوق الرصيد المتبقي المسجل.`;
+      } else {
+        diffBadge.textContent = `${formatNum(diff)} د.ج فرق`;
+        diffBadge.className = 'font-bold text-rose-300';
+        diffText.textContent = `ينقص ${formatNum(Math.abs(diff))} د.ج عن الرصيد المتبقي (ربما نسيت تسجيل مصروف).`;
+      }
+    }
+
+    // Render Analytics Charts & Table (Tab 3)
+    function renderAnalytics() {
+      const monthObj = getCurrentMonthObj();
+      const expenses = monthObj.expenses || [];
+      const totalSpent = expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
+
+      // Aggregate by category
+      const catSums = {};
+      const catCounts = {};
+      Object.keys(CATEGORIES).forEach(k => {
+        catSums[k] = 0;
+        catCounts[k] = 0;
+      });
+      expenses.forEach(e => {
+        const k = CATEGORIES[e.category] ? e.category : 'other';
+        catSums[k] += Number(e.amount) || 0;
+        catCounts[k] += 1;
+      });
+
+      const activeCats = Object.keys(CATEGORIES)
+        .filter(k => catSums[k] > 0)
+        .sort((a, b) => catSums[b] - catSums[a]);
+
+      // Populate Table
+      const tbody = document.getElementById('categoryReportTableBody');
+      if (activeCats.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-400 font-semibold">لا توجد مصاريف مسجلة في هذا الشهر بعد</td></tr>`;
+      } else {
+        tbody.innerHTML = activeCats.map(k => {
+          const c = CATEGORIES[k];
+          const amt = catSums[k];
+          const pct = totalSpent > 0 ? Math.round((amt / totalSpent) * 100) : 0;
+          return `
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-3 font-bold text-slate-800">${c.icon} ${c.label}</td>
+              <td class="py-3 px-3 font-semibold text-slate-600">${catCounts[k]}</td>
+              <td class="py-3 px-3 font-extrabold text-slate-900 num-font">${formatNum(amt)} د.ج</td>
+              <td class="py-3 px-3 text-xs font-semibold text-emerald-700">${dzdToAlgerianCentimeText(amt)}</td>
+              <td class="py-3 px-3">
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-xs num-font w-9">${pct}%</span>
+                  <div class="w-20 h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full" style="width:${pct}%; background-color:${c.color}"></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Draw Native 2D Canvas Doughnut Chart (100% offline, zero external dependencies)
+      const catCanvas = document.getElementById('categoryChartCanvas');
+      if (catCanvas && catCanvas.getContext) {
+        const ctx = catCanvas.getContext('2d');
+        const rect = catCanvas.parentElement.getBoundingClientRect();
+        const w = Math.max(260, rect.width || 320);
+        const h = 260;
+        catCanvas.width = w;
+        catCanvas.height = h;
+        ctx.clearRect(0, 0, w, h);
+
+        const cx = w / 2;
+        const cy = 105;
+        const radius = 75;
+        let startAngle = -Math.PI / 2;
+
+        if (activeCats.length === 0 || totalSpent <= 0) {
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+          ctx.fillStyle = '#e2e8f0';
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius * 0.58, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+          ctx.fillStyle = '#64748b';
+          ctx.font = 'bold 13px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('لا توجد مصاريف', cx, cy + 5);
+        } else {
+          activeCats.forEach(k => {
+            const val = catSums[k];
+            const sliceAngle = (val / totalSpent) * Math.PI * 2;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, radius, startAngle, startAngle + sliceAngle);
+            ctx.closePath();
+            ctx.fillStyle = CATEGORIES[k].color;
+            ctx.fill();
+            startAngle += sliceAngle;
+          });
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius * 0.58, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+          ctx.fillStyle = '#0f172a';
+          ctx.font = 'bold 13px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(formatNum(totalSpent) + ' د.ج', cx, cy + 5);
+
+          // Draw compact legend below doughnut
+          let lx = 16;
+          let ly = 205;
+          ctx.font = 'bold 11px sans-serif';
+          ctx.textAlign = 'left';
+          activeCats.slice(0, 6).forEach((k, idx) => {
+            const col = idx % 2;
+            const row = Math.floor(idx / 2);
+            const xPos = col === 0 ? 16 : (w / 2) + 8;
+            const yPos = ly + row * 20;
+            ctx.fillStyle = CATEGORIES[k].color;
+            ctx.fillRect(xPos, yPos - 9, 10, 10);
+            ctx.fillStyle = '#334155';
+            const pct = Math.round((catSums[k] / totalSpent) * 100);
+            ctx.fillText(`${CATEGORIES[k].label} (${pct}%)`, xPos + 15, yPos);
+          });
+        }
+      }
+
+      // Draw Native 2D Canvas Daily Bar Chart (100% offline)
+      const dailyCanvas = document.getElementById('dailyChartCanvas');
+      if (dailyCanvas && dailyCanvas.getContext) {
+        const ctx = dailyCanvas.getContext('2d');
+        const rect = dailyCanvas.parentElement.getBoundingClientRect();
+        const w = Math.max(260, rect.width || 320);
+        const h = 260;
+        dailyCanvas.width = w;
+        dailyCanvas.height = h;
+        ctx.clearRect(0, 0, w, h);
+
+        const [y, m] = appState.currentMonth.split('-').map(Number);
+        const daysCount = new Date(y, m, 0).getDate() || 30;
+        const dayMap = {};
+        let maxDayVal = 0;
+        for (let d = 1; d <= daysCount; d++) dayMap[d] = 0;
+        expenses.forEach(e => {
+          if (e.date) {
+            const dNum = parseInt(e.date.split('-')[2], 10);
+            if (dNum >= 1 && dNum <= daysCount) {
+              dayMap[dNum] += Number(e.amount) || 0;
+              if (dayMap[dNum] > maxDayVal) maxDayVal = dayMap[dNum];
+            }
+          }
+        });
+
+        const padLeft = 18;
+        const padRight = 18;
+        const padTop = 24;
+        const padBottom = 34;
+        const chartW = w - padLeft - padRight;
+        const chartH = h - padTop - padBottom;
+
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padLeft, padTop + chartH);
+        ctx.lineTo(w - padRight, padTop + chartH);
+        ctx.stroke();
+
+        const barSlot = chartW / daysCount;
+        const barW = Math.max(3, barSlot * 0.65);
+
+        for (let d = 1; d <= daysCount; d++) {
+          const val = dayMap[d];
+          const bh = maxDayVal > 0 ? (val / maxDayVal) * chartH : 0;
+          const bx = padLeft + (d - 1) * barSlot + (barSlot - barW) / 2;
+          const by = padTop + chartH - bh;
+          ctx.fillStyle = val > 0 ? '#059669' : '#f1f5f9';
+          ctx.fillRect(bx, val > 0 ? by : padTop + chartH - 3, barW, val > 0 ? bh : 3);
+
+          if (d === 1 || d % 5 === 0 || d === daysCount) {
+            ctx.fillStyle = '#64748b';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(String(d), bx + barW / 2, padTop + chartH + 16);
+          }
+        }
+      }
+
+    }
+
+    // Master Re-render
+    function renderAll() {
+      renderKPIs();
+      updateAmountHelpers();
+      renderExpensesList();
+      renderWalletCounter();
+      renderAnalytics();
+    }
+
+    // Event Wiring on DOM Ready (with immediate execution fallback for iOS WebView)
+    function initMasroufiApp() {
+      if (window.__masroufiAppStarted) return;
+      window.__masroufiAppStarted = true;
+      loadState();
+
+      // Initialize Month Picker & Date Picker
+      const monthPicker = document.getElementById('monthPicker');
+      monthPicker.value = appState.currentMonth;
+      document.getElementById('expenseDate').value = getTodayDateStr();
+
+      renderAll();
+
+      // Month change
+      monthPicker.addEventListener('change', (e) => {
+        if (e.target.value) {
+          appState.currentMonth = e.target.value;
+          ensureMonthExists(appState.currentMonth, false);
+          document.getElementById('expenseDate').value = `${appState.currentMonth}-01`;
+          saveState();
+          renderAll();
+          showToast(`تم الانتقال إلى شهر ${appState.currentMonth}`);
+        }
+      });
+
+      // Tab Switching
+      document.querySelectorAll('.tab-nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-tab');
+          ['expenseView', 'walletView', 'analyticsView'].forEach(id => {
+            const el = document.getElementById(id);
+            if (id === targetId) {
+              el.classList.remove('hidden');
+            } else {
+              el.classList.add('hidden');
+            }
+          });
+
+          document.querySelectorAll('.tab-nav-btn').forEach(b => {
+            if (b === btn) {
+              b.className = 'tab-nav-btn flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 bg-emerald-700 text-white shadow-sm';
+            } else {
+              b.className = 'tab-nav-btn flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100';
+            }
+          });
+
+          if (targetId === 'analyticsView') {
+            renderAnalytics();
+          }
+        });
+      });
+
+      // Cash Banknote & Coin Tap Buttons
+      document.querySelectorAll('.cash-tap-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const addVal = Number(btn.getAttribute('data-cash-add')) || 0;
+          const input = document.getElementById('expenseAmount');
+          const currentVal = Number(input.value) || 0;
+          input.value = currentVal + addVal;
+          tappedNotesStack.push(addVal);
+          updateAmountHelpers();
+        });
+      });
+
+      // Undo & Clear Amount
+      document.getElementById('btnUndoNote').addEventListener('click', () => {
+        if (tappedNotesStack.length > 0) {
+          const lastNote = tappedNotesStack.pop();
+          const input = document.getElementById('expenseAmount');
+          const nextVal = Math.max(0, (Number(input.value) || 0) - lastNote);
+          input.value = nextVal > 0 ? nextVal : '';
+          updateAmountHelpers();
+        }
+      });
+
+      document.getElementById('btnClearAmount').addEventListener('click', () => {
+        document.getElementById('expenseAmount').value = '';
+        tappedNotesStack = [];
+        updateAmountHelpers();
+      });
+
+      document.getElementById('expenseAmount').addEventListener('input', () => {
+        updateAmountHelpers();
+      });
+
+      // Quick Expense Preset Chips
+      document.querySelectorAll('.quick-preset-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const raw = chip.getAttribute('data-quick-preset') || '';
+          const [title, amountStr, cat] = raw.split('|');
+          document.getElementById('expenseNote').value = title;
+          document.getElementById('expenseAmount').value = Number(amountStr) || 0;
+          document.getElementById('expenseCategory').value = cat;
+          tappedNotesStack = [Number(amountStr) || 0];
+          updateAmountHelpers();
+        });
+      });
+
+      // Submit Expense Form
+      document.getElementById('expenseForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const amount = Number(document.getElementById('expenseAmount').value) || 0;
+        if (amount <= 0) {
+          showToast('الرجاء إدخال مبلغ صحيح أو النقر على الأوراق النقدية');
+          return;
+        }
+        const category = document.getElementById('expenseCategory').value;
+        const note = document.getElementById('expenseNote').value.trim();
+        const date = document.getElementById('expenseDate').value || getTodayDateStr();
+
+        const monthObj = getCurrentMonthObj();
+        monthObj.expenses.unshift({
+          id: 'exp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+          amount,
+          category,
+          note,
+          date
+        });
+
+        saveState();
+        document.getElementById('expenseAmount').value = '';
+        document.getElementById('expenseNote').value = '';
+        tappedNotesStack = [];
+        renderAll();
+        showToast(`تم تسجيل مصروف ${formatNum(amount)} د.ج بنجاح`);
+      });
+
+      // Delete Single Expense (Delegated)
+      document.getElementById('expensesListContainer').addEventListener('click', (e) => {
+        const delBtn = e.target.closest('.delete-expense-btn');
+        if (!delBtn) return;
+        const id = delBtn.getAttribute('data-delete-id');
+        const monthObj = getCurrentMonthObj();
+        monthObj.expenses = (monthObj.expenses || []).filter(item => item.id !== id);
+        saveState();
+        renderAll();
+        showToast('تم حذف المصروف');
+      });
+
+      // Search & Filter Expenses
+      document.getElementById('searchExpenseInput').addEventListener('input', renderExpensesList);
+      document.getElementById('filterCategorySelect').addEventListener('change', renderExpensesList);
+
+      // Load Demo Data & Clear All Expenses
+      document.getElementById('btnLoadDemoData').addEventListener('click', () => {
+        appState.monthsData[appState.currentMonth] = createInitialDemoMonth(appState.currentMonth);
+        saveState();
+        renderAll();
+        showToast('تم تحميل البيانات التجريبية بنجاح');
+      });
+
+      document.getElementById('btnClearAllExpenses').addEventListener('click', () => {
+        openConfirmModal(
+          'مسح جميع مصاريف الشهر',
+          'هل أنت متأكد من مسح كافة المصاريف المسجلة لهذا الشهر؟ لا يمكن التراجع عن هذه الخطوة.',
+          () => {
+            const monthObj = getCurrentMonthObj();
+            monthObj.expenses = [];
+            saveState();
+            renderAll();
+            showToast('تم تصفير سجل مصاريف الشهر');
+          }
+        );
+      });
+
+      // Confirm Modal Buttons
+      document.getElementById('btnConfirmYes').addEventListener('click', () => {
+        if (typeof pendingConfirmCallback === 'function') {
+          pendingConfirmCallback();
+        }
+        closeConfirmModal();
+      });
+      document.getElementById('btnConfirmNo').addEventListener('click', closeConfirmModal);
+
+      // Budget Modal Open/Close/Save
+      function openBudgetModal() {
+        const monthObj = getCurrentMonthObj();
+        const bInput = document.getElementById('budgetInputDzd');
+        const sInput = document.getElementById('savingsGoalInputDzd');
+        bInput.value = monthObj.budgetDzd || 0;
+        sInput.value = monthObj.savingsGoalDzd || 0;
+        document.getElementById('budgetModalCentimePreview').textContent = `يعادل: ${dzdToAlgerianCentimeText(bInput.value)}`;
+        const modal = document.getElementById('budgetModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+
+      function closeBudgetModal() {
+        const modal = document.getElementById('budgetModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+
+      document.getElementById('btnOpenBudgetModal').addEventListener('click', openBudgetModal);
+      document.getElementById('btnQuickEditBudget').addEventListener('click', openBudgetModal);
+      document.getElementById('btnCloseBudgetModal').addEventListener('click', closeBudgetModal);
+      document.getElementById('btnCancelBudgetModal').addEventListener('click', closeBudgetModal);
+
+      document.getElementById('budgetInputDzd').addEventListener('input', (e) => {
+        document.getElementById('budgetModalCentimePreview').textContent = `يعادل: ${dzdToAlgerianCentimeText(e.target.value)}`;
+      });
+
+      document.querySelectorAll('.budget-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = Number(btn.getAttribute('data-budget-preset')) || 0;
+          document.getElementById('budgetInputDzd').value = val;
+          document.getElementById('budgetModalCentimePreview').textContent = `يعادل: ${dzdToAlgerianCentimeText(val)}`;
+        });
+      });
+
+      document.getElementById('budgetForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const monthObj = getCurrentMonthObj();
+        monthObj.budgetDzd = Math.max(0, Number(document.getElementById('budgetInputDzd').value) || 0);
+        monthObj.savingsGoalDzd = Math.max(0, Number(document.getElementById('savingsGoalInputDzd').value) || 0);
+        saveState();
+        closeBudgetModal();
+        renderAll();
+        showToast('تم تحديث الميزانية الشهرية بنجاح');
+      });
+
+      // Wallet Counter Events (Delegated)
+      document.getElementById('denominationCounterGrid').addEventListener('click', (e) => {
+        const stepBtn = e.target.closest('.counter-step-btn');
+        if (!stepBtn) return;
+        const denom = Number(stepBtn.getAttribute('data-denom'));
+        const delta = Number(stepBtn.getAttribute('data-counter-step'));
+        const monthObj = getCurrentMonthObj();
+        const current = Number(monthObj.walletCounts[denom]) || 0;
+        monthObj.walletCounts[denom] = Math.max(0, current + delta);
+        saveState();
+        renderWalletCounter();
+      });
+
+      document.getElementById('denominationCounterGrid').addEventListener('input', (e) => {
+        const input = e.target.closest('.denom-direct-input');
+        if (!input) return;
+        const denom = Number(input.getAttribute('data-denom-input'));
+        const monthObj = getCurrentMonthObj();
+        monthObj.walletCounts[denom] = Math.max(0, Number(input.value) || 0);
+        saveState();
+        renderWalletCounter();
+      });
+
+      document.getElementById('btnResetCounter').addEventListener('click', () => {
+        const monthObj = getCurrentMonthObj();
+        monthObj.walletCounts = { 2000: 0, 1000: 0, 500: 0, 200: 0, 100: 0, 50: 0, 20: 0, 10: 0, 5: 0 };
+        saveState();
+        renderWalletCounter();
+        showToast('تم تصفير عدّاد الأوراق النقدية');
+      });
+
+      document.getElementById('btnSetAsBudget').addEventListener('click', () => {
+        const monthObj = getCurrentMonthObj();
+        let total = 0;
+        DENOMINATIONS.forEach(d => {
+          total += (Number(monthObj.walletCounts[d.value]) || 0) * d.value;
+        });
+        if (total <= 0) {
+          showToast('الرجاء عدّ بعض الأوراق النقدية أولاً');
+          return;
+        }
+        monthObj.budgetDzd = total;
+        saveState();
+        renderAll();
+        showToast(`تم اعتماد ${formatNum(total)} د.ج كميزانية للشهر`);
+      });
+
+      // Export CSV
+      document.getElementById('btnExportCsv').addEventListener('click', () => {
+        const monthObj = getCurrentMonthObj();
+        const expenses = monthObj.expenses || [];
+        const rows = [
+          ['التاريخ', 'التصنيف', 'الوصف', 'المبلغ (د.ج)', 'المعادل بالسنتيم']
+        ];
+        expenses.forEach(e => {
+          const catLabel = CATEGORIES[e.category] ? CATEGORIES[e.category].label : 'أخرى';
+          rows.push([
+            e.date || '',
+            catLabel,
+            (e.note || catLabel).replace(/"/g, '""'),
+            String(e.amount || 0),
+            dzdToAlgerianCentimeText(e.amount || 0)
+          ]);
+        });
+
+        const csvContent = '\uFEFF' + rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `masroufi_dz_${appState.currentMonth}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast('تم تحميل ملف المصاريف CSV');
+      });
+
+      // Copy Summary Text
+      document.getElementById('btnCopySummary').addEventListener('click', () => {
+        const monthObj = getCurrentMonthObj();
+        const budget = Number(monthObj.budgetDzd) || 0;
+        const spent = (monthObj.expenses || []).reduce((s, e) => s + (Number(e.amount) || 0), 0);
+        const rem = budget - spent;
+
+        const text = `ملخص مصروفي لشهر ${appState.currentMonth}:\n` +
+          `- الميزانية الشهرية: ${formatNum(budget)} د.ج (${dzdToAlgerianCentimeText(budget)})\n` +
+          `- إجمالي المصاريف: ${formatNum(spent)} د.ج (${dzdToAlgerianCentimeText(spent)})\n` +
+          `- الرصيد المتبقي: ${formatNum(rem)} د.ج (${dzdToAlgerianCentimeText(rem)})`;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast('تم نسخ ملخص الشهر إلى الحافظة');
+          }).catch(() => {
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
+      });
+
+      // Local App Modal, Standalone File Download, PWA & Backup/Restore
+      const localAppModal = document.getElementById('localAppModal');
+      function openLocalAppModal() {
+        localAppModal.classList.remove('hidden');
+        localAppModal.classList.add('flex');
+      }
+      function closeLocalAppModal() {
+        localAppModal.classList.add('hidden');
+        localAppModal.classList.remove('flex');
+      }
+
+      document.getElementById('btnOpenLocalAppModal').addEventListener('click', openLocalAppModal);
+      document.getElementById('btnCloseLocalAppModal').addEventListener('click', closeLocalAppModal);
+      document.getElementById('btnDismissLocalAppModal').addEventListener('click', closeLocalAppModal);
+
+      // Attach dynamic Web App Manifest safely
+      if (false) try {
+        const manifestObj = {
+          name: 'مصروفي DZ - حاسبة المصاريف الشهرية',
+          short_name: 'مصروفي DZ',
+          description: 'تطبيق محلي لحساب المصاريف الشهرية وواجهة النقود بالدينار الجزائري والسنتيم',
+          start_url: './Masroufi_DZ_App.html',
+          display: 'standalone',
+          dir: 'rtl',
+          lang: 'ar',
+          background_color: '#f4f7f6',
+          theme_color: '#064e3b',
+          icons: [
+            {
+              src: document.getElementById('appFavicon').getAttribute('href'),
+              sizes: '192x192',
+              type: 'image/svg+xml',
+              purpose: 'any maskable'
+            }
+          ]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestUrl;
+        document.head.appendChild(manifestLink);
+      } catch (err) {
+        // Ignore inside restricted frames
+      }
+
+      let deferredInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        const pwaBtn = document.getElementById('btnTriggerPwaInstall');
+        if (pwaBtn) pwaBtn.classList.remove('hidden');
+      });
+
+      document.getElementById('btnTriggerPwaInstall').addEventListener('click', async () => {
+        if (!deferredInstallPrompt) return;
+        deferredInstallPrompt.prompt();
+        await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+        document.getElementById('btnTriggerPwaInstall').classList.add('hidden');
+      });
+
+      // Copy self-contained Data URL for iPhone Safari & iPhone Shortcuts (bypasses iOS file download restrictions)
+      document.getElementById('btnCopyIosDataUrl').addEventListener('click', () => {
+        const cleanDoc = document.documentElement.cloneNode(true);
+        const modalEl = cleanDoc.querySelector('#localAppModal');
+        if (modalEl) {
+          modalEl.classList.add('hidden');
+          modalEl.classList.remove('flex');
+        }
+        const fullHtml = '<!DOC' + 'TYPE html>\n' + cleanDoc.outerHTML;
+        const b64Html = btoa(unescape(encodeURIComponent(fullHtml)));
+        const dataUri = 'data:text/html;charset=utf-8;base64,' + b64Html;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(dataUri).then(() => {
+            showToast('تم نسخ رابط التطبيق! افتح Safari أو تطبيق الاختصارات في الآيفون والصقه هناك');
+          }).catch(() => {
+            fallbackCopy(dataUri);
+            showToast('تم نسخ رابط التطبيق! افتح Safari أو تطبيق الاختصارات في الآيفون والصقه هناك');
+          });
+        } else {
+          fallbackCopy(dataUri);
+          showToast('تم نسخ رابط التطبيق! افتح Safari أو تطبيق الاختصارات في الآيفون والصقه هناك');
+        }
+      });
+
+      // Generate Apple iOS WebClip Configuration Profile (.mobileconfig) for 100% offline Home Screen App on iPhone
+      document.getElementById('btnInstallIosProfile').addEventListener('click', () => {
+        const cleanDoc = document.documentElement.cloneNode(true);
+        const modalEl = cleanDoc.querySelector('#localAppModal');
+        if (modalEl) {
+          modalEl.classList.add('hidden');
+          modalEl.classList.remove('flex');
+        }
+        const fullHtml = '<!DOC' + 'TYPE html>\n' + cleanDoc.outerHTML;
+        const b64Html = btoa(unescape(encodeURIComponent(fullHtml)));
+        const dataUri = 'data:text/html;charset=utf-8;base64,' + b64Html;
+
+        // Create a 128x128 PNG icon via offscreen canvas for iOS WebClip Icon
+        const iconCanvas = document.createElement('canvas');
+        iconCanvas.width = 180;
+        iconCanvas.height = 180;
+        const ctx = iconCanvas.getContext('2d');
+        ctx.fillStyle = '#064e3b';
+        ctx.fillRect(0, 0, 180, 180);
+        ctx.strokeStyle = '#34d399';
+        ctx.lineWidth = 6;
+        ctx.strokeRect(12, 12, 156, 156);
+        ctx.fillStyle = '#6ee7b7';
+        ctx.font = 'bold 64px Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('د.ج', 90, 95);
+        const iconB64 = iconCanvas.toDataURL('image/png').split(',')[1];
+
+        const mobileConfigXml = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>FullScreen</key>
+      <true/>
+      <key>Icon</key>
+      <data>${iconB64}</data>
+      <key>IgnoreManifestScope</key>
+      <true/>
+      <key>IsRemovable</key>
+      <true/>
+      <key>Label</key>
+      <string>مصروفي DZ</string>
+      <key>PayloadDescription</key>
+      <string>تثبيت تطبيق مصروفي DZ على الشاشة الرئيسية للآيفون</string>
+      <key>PayloadDisplayName</key>
+      <string>تطبيق مصروفي DZ</string>
+      <key>PayloadIdentifier</key>
+      <string>dz.masroufi.webclip.app</string>
+      <key>PayloadType</key>
+      <string>com.apple.webClip.managed</string>
+      <key>PayloadUUID</key>
+      <string>8A9C7E12-4B5D-4E2A-9F11-3C8D7E6F5A4B</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>Precomposed</key>
+      <true/>
+      <key>URL</key>
+      <string>${dataUri}</string>
+    </dict>
+  </array>
+  <key>PayloadDescription</key>
+  <string>تطبيق محلي لحساب المصاريف الشهرية بالدينار الجزائري وواجهة النقود (يعمل بدون متصفح وبدون إنترنت)</string>
+  <key>PayloadDisplayName</key>
+  <string>مصروفي DZ - تطبيق الآيفون</string>
+  <key>PayloadIdentifier</key>
+  <string>dz.masroufi.profile</string>
+  <key>PayloadOrganization</key>
+  <string>Masroufi DZ</string>
+  <key>PayloadRemovalDisallowed</key>
+  <false/>
+  <key>PayloadType</key>
+  <string>Configuration</string>
+  <key>PayloadUUID</key>
+  <string>1F2E3D4C-5B6A-4789-8A9B-0C1D2E3F4A5B</string>
+  <key>PayloadVersion</key>
+  <integer>1</integer>
+</dict>
+</plist>`;
+
+        const blob = new Blob([mobileConfigXml], { type: 'application/x-apple-aspen-config' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Masroufi_DZ_iPhone_App.mobileconfig';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('تم تنزيل ملف تثبيت تطبيق الآيفون! افتح الإعدادات > تم تنزيل ملف التعريف > تثبيت');
+      });
+
+      // Download Standalone HTML App with current data embedded as initial seed
+      document.getElementById('btnDownloadStandaloneApp').addEventListener('click', () => {
+        const htmlSource = '<!DOC' + 'TYPE html>\n' + document.documentElement.outerHTML;
+        const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Masroufi_DZ_App.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('تم تحميل ملف التطبيق المستقل (Masroufi_DZ_App.html)');
+      });
+
+      // Export Full JSON Backup
+      document.getElementById('btnExportJsonBackup').addEventListener('click', () => {
+        const payload = JSON.stringify(appState, null, 2);
+        const blob = new Blob([payload], { type: 'application/json;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `masroufi_dz_backup_${appState.currentMonth}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('تم حفظ ملف النسخة الاحتياطية بنجاح');
+      });
+
+      // Import Full JSON Backup
+      document.getElementById('inputImportJsonBackup').addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const parsed = JSON.parse(String(ev.target.result || ''));
+            if (parsed && parsed.monthsData) {
+              appState = parsed;
+              if (!appState.currentMonth) appState.currentMonth = getDefaultMonthStr();
+              document.getElementById('monthPicker').value = appState.currentMonth;
+              saveState();
+              renderAll();
+              closeLocalAppModal();
+              showToast('تمت استعادة جميع بياناتك بنجاح!');
+            } else {
+              showToast('ملف النسخة الاحتياطية غير صالح');
+            }
+          } catch (err) {
+            showToast('تعذرت قراءة الملف، تأكد من اختيار ملف JSON الصحيح');
+          }
+        };
+        reader.readAsText(file, 'utf-8');
+        e.target.value = '';
+      });
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showToast('تم نسخ ملخص الشهر إلى الحافظة');
+        } catch (err) {
+          showToast('تعذر النسخ التلقائي');
+        }
+        document.body.removeChild(ta);
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMasroufiApp);
+    } else {
+      initMasroufiApp();
+    }
+    window.addEventListener('load', initMasroufiApp);
+  </script>
+</body>
+</html>
